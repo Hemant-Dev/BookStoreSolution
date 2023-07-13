@@ -3,8 +3,9 @@ using BookStore.DataAccess.Repository.IRepository;
 using BookStore.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BookStore.Controllers
+namespace BookStore.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class CategoryController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -25,13 +26,13 @@ namespace BookStore.Controllers
         [HttpPost]
         public IActionResult Create(Category obj)
         {
-            if(obj.Name == obj.DisplayOrder.ToString())
+            if (obj.Name == obj.DisplayOrder.ToString())
             {
                 ModelState.AddModelError("name", "The Display Order cannot match the name");
             }
             if (obj.Name != null && obj.Name.ToLower() == "test")
             {
-                ModelState.AddModelError("","The test is an invalid value");
+                ModelState.AddModelError("", "The test is an invalid value");
             }
             if (ModelState.IsValid)
             {
@@ -47,7 +48,7 @@ namespace BookStore.Controllers
 
         public IActionResult Edit(int? id)
         {
-            if(id == null || id == 0)
+            if (id == null || id == 0)
             {
                 return NotFound();
             }
@@ -56,7 +57,7 @@ namespace BookStore.Controllers
             //Category? categoryFromDb1 = _db.MyCategories.FirstOrDefault(u => u.Id == id);
             //Category? categoryFromDb2 = _db.MyCategories.Where(u=> u.Id == id).FirstOrDefault();
 
-            if(categoryFromDb == null)
+            if (categoryFromDb == null)
             {
                 return NotFound();
             }
@@ -65,7 +66,7 @@ namespace BookStore.Controllers
         [HttpPost]
         public IActionResult Edit(Category obj)
         {
-           
+
             if (ModelState.IsValid)
             {
                 _unitOfWork.Category.Update(obj);
@@ -95,7 +96,7 @@ namespace BookStore.Controllers
 
 
         [HttpPost, ActionName("Delete")]
-        public IActionResult DeletePOST(int? id) 
+        public IActionResult DeletePOST(int? id)
         {
             Category? obj = _unitOfWork.Category.Get(u => u.Id == id);
             if (obj == null)
@@ -110,6 +111,6 @@ namespace BookStore.Controllers
         }
     }
 
-        
+
 }
 
