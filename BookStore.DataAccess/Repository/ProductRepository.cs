@@ -11,7 +11,7 @@ namespace BookStore.DataAccess.Repository
 {
     public class ProductRepository : Repository<Product>, IProductRepository
     {
-        private readonly AppDbContext _db;
+        private AppDbContext _db;
         public ProductRepository(AppDbContext db) : base(db)
         {
             _db = db;
