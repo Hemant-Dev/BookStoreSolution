@@ -124,22 +124,22 @@ namespace BookStore.Areas.Admin.Controllers
         //    return View();  
         //}
 
-        public IActionResult Delete(int? id)
-        {
-            if (id == null) { return NotFound(); }
-            Product objFromDelete = _unitOfWork.Product.Get(u => u.Id == id);
-            return View(objFromDelete);
-        }
-        [HttpPost, ActionName("Delete")]
-        public IActionResult DeletePost(int? id)
-        {
-            if(id == null) { return NotFound(); }  
-            Product objFromDelete = _unitOfWork.Product.Get(u => u.Id==id);
-            if(objFromDelete == null) { return NotFound(); }
-            _unitOfWork.Product.Remove(objFromDelete);
-            _unitOfWork.Save();
-            return RedirectToAction("Index");
-        }
+        //public IActionResult Delete(int? id)
+        //{
+        //    if (id == null) { return NotFound(); }
+        //    Product objFromDelete = _unitOfWork.Product.Get(u => u.Id == id);
+        //    return View(objFromDelete);
+        //}
+        //[HttpPost, ActionName("Delete")]
+        //public IActionResult DeletePost(int? id)
+        //{
+        //    if(id == null) { return NotFound(); }  
+        //    Product objFromDelete = _unitOfWork.Product.Get(u => u.Id==id);
+        //    if(objFromDelete == null) { return NotFound(); }
+        //    _unitOfWork.Product.Remove(objFromDelete);
+        //    _unitOfWork.Save();
+        //    return RedirectToAction("Index");
+        //}
 
 
 
@@ -151,7 +151,6 @@ namespace BookStore.Areas.Admin.Controllers
             List<Product> objFromProductList = _unitOfWork.Product.GetAll(includeProperties:"Category").ToList();
             return Json(new { data = objFromProductList });
         }
-
 
         [HttpDelete]
         public IActionResult Delete(int? id)
@@ -168,7 +167,7 @@ namespace BookStore.Areas.Admin.Controllers
                 System.IO.File.Delete(oldImagePath);
             }
             _unitOfWork.Product.Remove(productToBeDeleted);
-            _unitOfWork.Save()
+            _unitOfWork.Save();
             return Json(new { success = true, message = "Delete Successful" });
         }
 
