@@ -10,12 +10,12 @@
             </h2>
         </div>
         <div class="col-6 text-end">
-            <a asp-controller="Product" asp-action="Create" asp-area="Admin" class="btn btn-primary"><i class="bi bi-file-plus"></i>Create New Product</a>
+            <a asp-controller="Product" asp-action="Upsert" asp-area="Admin" class="btn btn-primary"><i class="bi bi-file-plus"></i>Create New Product</a>
         </div>
     </div>
 
 
-    <table class="table table-striped">
+    <table id="tblData" class="table table-striped">
         <thead>
             <tr>
                 <th>
@@ -33,19 +33,12 @@
                 <th>
                     List Price
                 </th>
-         @*       <th>
-                    Price for 1-50
-                </th>
                 <th>
-                    Price for 50-100
+                    Category Name
                 </th>
-                <th>
-                    Price for 100+
-                </th>*@
             </tr>
         </thead>
-
-        <tbody>
+       @* <tbody>
             @foreach (var obj in Model.OrderBy(u => u.ListPrice))
             {
                 <tr>
@@ -54,12 +47,13 @@
                     <td>@obj.Author</td>
                     <td>@obj.ISBN</td>
                     <td>@obj.ListPrice</td>
-                   @* <td>@obj.Price</td>
-                    <td>@obj.Price50</td>
-                    <td>@obj.Price100</td>*@
-                    <td>
+                    <td>@obj.Category.Name</td>
+                    @* <td>@obj.Price</td>
+                <td>@obj.Price50</td>
+                <td>@obj.Price100</td>*@
+                    @*<td>
                         <div class="w-75 btn-group" role="group">
-                            <a asp-controller="Product" asp-action="Edit" asp-route-id="@obj.Id" class="btn btn-primary mx-2">
+                            <a asp-controller="Product" asp-action="Upsert" asp-route-id="@obj.Id" class="btn btn-primary mx-2">
                                 <i class="bi bi-pencil-square"></i>Edit
                             </a>
 
@@ -72,9 +66,12 @@
                 </tr>
             }
 
-        </tbody>
-
-
+        </tbody>*@
     </table>
 
 </div>
+
+
+@section Scripts {
+    <script src="~/js/product.js"></script>                  
+}
