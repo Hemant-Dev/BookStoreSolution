@@ -1,11 +1,13 @@
 ﻿using BookStore.Models;
 using BookStore.Models.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookStore.Data
 {
 
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<IdentityUser>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
@@ -14,8 +16,15 @@ namespace BookStore.Data
 
         public DbSet<Category> MyCategories { get; set; }
         public DbSet<Product> MyProducts { get; set; }
+        public DbSet<ApplicationUser> MyApplicationUsers { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+            //To stop IdentityDbContext Has no primary key input error
+            base.OnModelCreating(modelBuilder);
+            //
+
             modelBuilder.Entity<Category>().HasData(
                 new Category { Id = 1, Name = "Action", DisplayOrder = 1 },
                 new Category { Id = 2, Name = "Sci-Fi", DisplayOrder = 2 },
