@@ -2,8 +2,10 @@
 using BookStore.Models;
 using BookStore.Models.Models;
 using BookStore.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace BookStore.Areas.Customer.Controllers
 {
@@ -27,9 +29,47 @@ namespace BookStore.Areas.Customer.Controllers
 
         public IActionResult Details(int productId)
         {
-            Product product = _unitOfWork.Product.Get(u => u.Id == productId, includeProperties:"Category");
-            return View(product);
+            
+            ShoppingCart shoppingCartObj = new ShoppingCart()
+            {
+                Product = _unitOfWork.Product.Get(u => u.Id == productId, includeProperties: "Category"),
+                Count = 1,
+                ProductId = productId,
+                
+            };
+            return View(shoppingCartObj);
         }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult Details(ShoppingCart objFromShoppingCart) 
+        {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            objFromShoppingCart.ApplicationUserId = userId;
+
+            ShoppingCart cartFromDb = _unitOfWork.ShoppingCart.Get(u => u.ApplicationUserId == userId && u.ProductId == objFromShoppingCart.ProductId);
+
+            if(cartFromDb != null)
+            {
+                //Update Cart
+                cartFromDb.Count += objFromShoppingCart.Count;
+                _unitOfWork.ShoppingCart.Update(cartFromDb);
+
+            }
+            else
+            {
+                //Add New Cart
+                _unitOfWork.ShoppingCart.Add(objFromShoppingCart);
+            }
+            TempData["success"] = "Cart Updated Successfully";
+
+            _unitOfWork.Save();
+
+            return RedirectToAction(nameof(Index));
+
+        }
+
 
         public IActionResult Privacy()
         {

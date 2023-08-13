@@ -18,6 +18,7 @@ namespace BookStore.Data
         public DbSet<Product> MyProducts { get; set; }
         public DbSet<ApplicationUser> MyApplicationUsers { get; set; }
         public DbSet<Company> Companies { get; set; }
+        public DbSet<ShoppingCart> ShoppingCarts { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
