@@ -149,7 +149,7 @@ namespace BookStore.Areas.Identity.Pages.Account
                 })
             };
 
-           
+
 
 
             ReturnUrl = returnUrl;
