@@ -31,6 +31,12 @@ namespace BookStore
                 options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
             });
 
+            builder.Services.AddAuthentication().AddFacebook(options =>
+            {
+                options.AppId = "346971434320247";
+                options.AppSecret = "41d8aba85a0ad7f9076c1c2d53b77413";
+            });
+
             builder.Services.AddDistributedMemoryCache();
             builder.Services.AddSession(options =>
             {
